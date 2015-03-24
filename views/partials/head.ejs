@@ -44,7 +44,6 @@
     map.setOptions({styles: styles});
 
     try {
-
         // Data Imports //
 
         var neighborhoods = map.data.loadGeoJson('https://s3.amazonaws.com/geohackers-for-good/seattle_named_neighborhoods.geojson');
@@ -52,17 +51,16 @@
 
         // Styling the Data //
 
-
       }
 
       finally {
-        var inputTime = 40
+
         var widget = new walkscore.TravelTimeWidget({
           map: map,
           origin: '47.6080279,-122.3228995',
           show: true,
           mode: walkscore.TravelTime.Mode.DRIVE,
-          time: inputTime,
+          time: 40,
           congestion: true
         });
       }
