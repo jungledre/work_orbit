@@ -10,6 +10,28 @@
 <script type="text/javascript">
   function initialize() {
 
+    var address = document.URL.split('/')[5];
+    console.log(address)
+
+    address = address.replace(/%20/g,' ');
+    console.log(address)
+
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var location = results[0].geometry.location
+        console.log(location);
+        // var marker = new google.maps.Marker({
+        //     map: map,
+        //     position: results[0].geometry.location
+        // });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+
+      }
+    });
+
     var map = new google.maps.Map(
       document.getElementById("map-canvas"),
       {
@@ -17,7 +39,7 @@
         center: new google.maps.LatLng(47.6080279,-122.3228995),
         zoom: 13
       }
-      );
+    );
 
     var styles = [
     {
@@ -67,9 +89,11 @@
         // var address = document.URL.split('/')[6];
 
 
+
+
         var widget = new walkscore.TravelTimeWidget({
           map: map,
-          origin: '47.6080279,-122.3228995',
+          origin: location,
           show: true,
           mode: mode_map[mode],
           time: time,
@@ -77,5 +101,6 @@
         });
 
     }
+
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>
