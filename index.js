@@ -14,8 +14,10 @@ app.get('/about', function(req, res){
   res.render('about');
 });
 
-app.get('/map/:time', function(req, res){
+app.get('/map/:time/:mode', function(req, res){
   obj = {
+        // geocoordinates
+        mode: req.params.mode,
         location: "1100 2ND AVENUE #500, SEATTLE, WA 98101",
         time: req.params.time
     }
@@ -25,6 +27,3 @@ app.get('/map/:time', function(req, res){
 app.listen(process.env.PORT || 3000, function(){
     console.log('DEATH RACE 3000!');
 });
-
-
-
