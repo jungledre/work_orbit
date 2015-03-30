@@ -11,17 +11,19 @@
   function initialize() {
 
     var address = document.URL.split('/')[5];
-    console.log(address)
-
     address = address.replace(/%20/g,' ');
-    console.log(address)
 
     var geocoder = new google.maps.Geocoder();
 
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         var location = results[0].geometry.location
-        console.log(location);
+        console.log(location)
+        var lat = location.D
+        var lng = location.k
+        console.log(lat,lng)
+        location = lat + ',' + lng
+        console.log(location)
         // var marker = new google.maps.Marker({
         //     map: map,
         //     position: results[0].geometry.location
@@ -79,6 +81,8 @@
         // Styling the Data //
 
 
+
+
         var mode_map = {
           'car': walkscore.TravelTime.Mode.DRIVE,
           'walk': walkscore.TravelTime.Mode.WALK,
@@ -86,14 +90,9 @@
           'bus': walkscore.TravelTime.Mode.TRANSIT
         }
 
-        // var address = document.URL.split('/')[6];
-
-
-
-
         var widget = new walkscore.TravelTimeWidget({
           map: map,
-          origin: location,
+          origin: "47.6080279,-122.3228995",
           show: true,
           mode: mode_map[mode],
           time: time,
