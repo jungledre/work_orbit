@@ -1,36 +1,39 @@
 <% include ../views/partials/header %>
 
-<div class="video-wrapper">
-  <video autoplay loop loop="loop" preload="auto" id="pretzel-video" class="video-playing">
-    <source src="splash.mp4" type="video/mp4">
+<section class="video-wrapper">
+    <video autoplay loop loop="loop" preload="auto" id="pretzel-video" class="video-playing">
+        <source src="splash.mp4" type="video/mp4">
     </video>
     <div class="learn-more"></div>
-</div>
+</section>
 
-<div class="intro-wrapper container">
+<section class="intro-wrapper container">
 
     <div class="col-sm-offset-3 col-sm-6 text-center">
 
-        <div class="form-group">
-          <div class="row">
-              <img src="logo-blue.png">
-              <h3>Where will you be working?</h3>
-              <input id="inputLocation" type="text" method="post" class="form-control" name="location" placeholder="1100 2nd Avenue #500, Seattle, WA 98101">
-              <h3>How long are you willing to commute?</h3>
-          </div>
+        <form class="form-group">
+            <div class="row">
+                <img src="logo-blue.png">
+                <h3>Where will you be working?</h3>
+                <input id="inputLocation" type="text" method="post" class="form-control" name="location" placeholder="1100 2nd Avenue #500, Seattle, WA 98101" required >
 
-          <div class="row">
-            <input id="inputMode" value="car" type="text" method="post" class="hidden" name="mode"/>
+                <div id="alert" class="alert alert-info hidden" role="alert">Please enter a valid address</div>
 
-            <button class="inputTime" id="inputTime20" value="20" type="submit" class="btn btn-primary" name="time">20 min</button>
-            <button class="inputTime" id="inputTime40" value="40" type="submit" class="btn btn-primary" name="time">40 min</button>
-            <button class="inputTime" id="inputTime60" value="60" type="submit" class="btn btn-primary" name="time">60 min</button>
-        </div>
+                <h3>How long are you willing to commute?</h3>
+            </div>
+
+            <div class="row">
+                <input id="inputMode" value="car" type="text" method="post" class="hidden" name="mode"/>
+
+                <button class="inputTime btn btn-primary" id="inputTime20" value="20" type="submit" class="btn btn-primary" name="time">20 min</button>
+                <button class="inputTime btn btn-primary" id="inputTime40" value="40" type="submit" class="btn btn-primary" name="time">40 min</button>
+                <button class="inputTime btn btn-primary" id="inputTime60" value="60" type="submit" class="btn btn-primary" name="time">60 min</button>
+            </div>
+        </form>
+
     </div>
 
-</div>
-
-</div>
+</section>
 
 
 <script>
