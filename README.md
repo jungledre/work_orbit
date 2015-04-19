@@ -24,7 +24,7 @@ Our approach for satisfying this challenge was to:
 Our team is comprised of:
 
 - Allan Yeung[@alyeung](https://github.com/alyeung) - Project Management & Presentation
-- Adrienne Kerr[@JungleDre](https://github.com/jungledre) - Full Stack Developer
+- Adrienne Kerr[@JungleDre](https://github.com/jungledre) - Full Stack Development
 - Andy Barr[@elandybarr](https://github.com/elandybarr) - Mapping Technology
 - Darren Mills[@DarrenMills](https://github.com/DarrenRM) - UX & Design
 
