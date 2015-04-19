@@ -3,6 +3,7 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var ejs         = require('ejs');
 var modes       = require('./public/modes.json');
+var bio         = require('./public/bio.json');
 
 app.set('view engine', 'ejs');
 
@@ -14,7 +15,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/about', function(req, res){
-  res.render('about');
+  res.render('about', {bio : bio.team});
 });
 
 app.post('/process', function(req,res){
@@ -29,7 +30,6 @@ app.get('/map/:time/:mode/:location', function(req, res){
       return val.name === mode;
   });
   var icon = (match[0].icon)
-
 
   res.render('map', {time: time, mode:mode, location:location, icon:icon, modes:modes.modes});
 })

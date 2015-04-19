@@ -2,28 +2,30 @@
 
 <div class="container">
 
-<div class="row" style="margin: 100px">
-  <div class="col-md-offset-2 col-md-8 text-center">
-    <h3>#hackthecommute</h3>
-    <h4>The Team</h4>
-    <div class="col-md-3">
-      <p>Adrienne</p>
-      <p>Dev</p>
-    </div>
-    <div class="col-md-3">
-      <p>Allan</p>
-      <p>PM</p>
-    </div>
-    <div class="col-md-3">
-      <p>Andy</p>
-      <p>Dev</p>
-    </div>
-    <div class="col-md-3">
-      <p>Darren</p>
-      <p>Designer</p>
-    </div>
+<h1 class="text-center">About the Team</h1>
 
+<% for (var i = 0; i <= bio.length - 1; i++) { %>
+  <div class="row">
+    <div class="col-md-3">
+      <img src="<%= bio[i].image %>" style="width: 100%;">
+    </div>
+    <div class="col-md-4">
+      <h2><%= bio[i].name %></h2>
+      <h3><%= bio[i].role %></h3>
+<!--       <h3>Skillsets</h3>    -->
+      <h3>Contact &nbsp;
+        <a href="mailto:<%= bio[i].email %>"><i class="fa fa-envelope-o"></i></a>
+        <a href="<%= bio[i].linkedin %>"><i class="fa fa-linkedin"></i></a>
+      </h3>
+    </div>
+    <div class="col-md-5">
+      <h3>About</h3>
+      <p><%= bio[i].about %></p>
+    </div>
   </div>
+  <br><br><br>
+<% }; %>
+
 </div>
 
 </div>

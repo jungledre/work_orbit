@@ -1,0 +1,36 @@
+{
+    "team" : [
+        {
+            "name" : "Adrienne Kerr",
+            "role" : "Full Stack Development",
+            "email" : "adrie.k@gmail.com",
+            "linkedin" : "https://www.linkedin.com/in/kerraj",
+            "about" : "Adrienne is a Full Stack Developer at Porch.com. When she's not attending hackathons or teaching other women how to code, she's on a bike, a mountain, an airplane, or on her saxophone.",
+            "image" : "adrienne.jpg"
+        },
+        {
+            "name" : "Andy Barr",
+            "role" : "Mapping Technology",
+            "email" : "el.andy.barr@gmail.com",
+            "linkedin" : "https://www.linkedin.com/in/elandybarr",
+            "about" : "I help people implement their geo-databases (PostgreSQL + CartoDB). I am also able to help startups get their AWS deployments architected and set up. Additionally, I have done some data analytics and signal processing.",
+            "image" : "andy.jpg"
+        },
+        {
+            "name" : "Allan Yeung",
+            "role" : "Project Management & Presentation",
+            "email" : "akyeung@gmail.com",
+            "linkedin" : "https://www.linkedin.com/in/allanyeung",
+            "about" : "Product manager with business and engineering background, with experience in developing and launching successful products at T-Mobile, Microsoft, and Intel. Product development experience portfolio includes T-Mobile Visual Voicemail, Microsoft Windows Phone, and Microsoft HoloLens.",
+            "image" : "allan.jpg"
+        },
+        {
+            "name" : "Darren Mills",
+            "role" : "UX & Design",
+            "email" : "darrenrmills@gmail.com",
+            "linkedin" : "https://www.linkedin.com/in/darrenmills",
+            "about" : "I'm a branding and UX guru with the rare hybrid of IT & design expertise. Over the past 5 years I've built two startups, successfully raised funding and gained priceless management and leadership experience. I'm a knowledge junkie, science geek and life-long learner. I believe in always moving forward, constant progress and having strong intrinsic motivators. Entrepreneurship will always be a huge part of what I'm about. If you share any of these passions, we should grab coffee!",
+            "image" : "darren.jpg"
+        }
+    ]
+}
