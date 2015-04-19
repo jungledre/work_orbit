@@ -3,7 +3,7 @@ Application Name: WorkOrbit
 This application was developed on March 22, 2015 for the [Seattle Hack the Commute](http://hackthecommute.seattle.gov/).
 
 ![Isn't our app beautiful?!](http://i.imgur.com/i0s7Mr6.png)
-Our app is live at http://example.com/awesome-app-that-doesnt-exist.
+Our app is live at (https://workorbit.herokuapp.com).
 
 ## Challenge and Approach
 
