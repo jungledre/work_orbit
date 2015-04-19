@@ -5,16 +5,8 @@
             "role" : "Full Stack Development",
             "email" : "adrie.k@gmail.com",
             "linkedin" : "https://www.linkedin.com/in/kerraj",
-            "about" : "Adrienne is a Full Stack Developer at Porch.com. When she's not attending hackathons or teaching other women how to code, she's on a bike, a mountain, an airplane, or on her saxophone.",
+            "about" : "I moved out to Seattle, WA to pursue music and tech and am currently a Full Stack Developer at Porch.com. When I'm not attending hackathons or teaching other women how to code, I'm on a bike, a mountain, an airplane, or on my saxophone.",
             "image" : "adrienne.jpg"
-        },
-        {
-            "name" : "Andy Barr",
-            "role" : "Mapping Technology",
-            "email" : "el.andy.barr@gmail.com",
-            "linkedin" : "https://www.linkedin.com/in/elandybarr",
-            "about" : "I help people implement their geo-databases (PostgreSQL + CartoDB). I am also able to help startups get their AWS deployments architected and set up. Additionally, I have done some data analytics and signal processing.",
-            "image" : "andy.jpg"
         },
         {
             "name" : "Allan Yeung",
@@ -23,6 +15,14 @@
             "linkedin" : "https://www.linkedin.com/in/allanyeung",
             "about" : "Product manager with business and engineering background, with experience in developing and launching successful products at T-Mobile, Microsoft, and Intel. Product development experience portfolio includes T-Mobile Visual Voicemail, Microsoft Windows Phone, and Microsoft HoloLens.",
             "image" : "allan.jpg"
+        },
+        {
+            "name" : "Andy Barr",
+            "role" : "Mapping Technology",
+            "email" : "el.andy.barr@gmail.com",
+            "linkedin" : "https://www.linkedin.com/in/elandybarr",
+            "about" : "I help people implement their geo-databases (PostgreSQL + CartoDB). I am also able to help startups get their AWS deployments architected and set up. Additionally, I have done some data analytics and signal processing.",
+            "image" : "andy.jpg"
         },
         {
             "name" : "Darren Mills",
