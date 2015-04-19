@@ -30,8 +30,9 @@ app.get('/map/:time/:mode/:location', function(req, res){
       return val.name === mode;
   });
   var icon = (match[0].icon)
+  var cost = (match[0].cost)
 
-  res.render('map', {time: time, mode:mode, location:location, icon:icon, modes:modes.modes});
+  res.render('map', {time: time, mode:mode, location:location, icon:icon, cost:cost, modes:modes.modes});
 })
 
 app.listen(process.env.PORT || 3000, function(){
