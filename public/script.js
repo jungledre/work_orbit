@@ -1,6 +1,6 @@
 $(function() {
   $('.inputTime').on("click", function(e) {
-    e.preventDefault();
+    // e.preventDefault();
     var time = $(this).val();
     var mode = $("#inputMode").val();
     var location = $("#inputLocation").val();
@@ -18,4 +18,8 @@ $(function() {
     })
   }
   })
+})
+
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus()
 })
