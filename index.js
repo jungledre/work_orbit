@@ -25,6 +25,8 @@ app.post('/process', function(req,res){
 app.get('/map/:time/:mode/:location', function(req, res){
   var time = req.params.time
   var mode = req.params.mode
+  mode = mode.charAt(0).toUpperCase() + mode.substr(1).toLowerCase()
+  console.log(mode)
   var location = req.params.location
   var match = modes.modes.filter(function(val, index, array) {
       return val.name === mode;

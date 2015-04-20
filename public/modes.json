@@ -1,22 +1,22 @@
 {
     "modes" : [
         {
-        "name" : "car",
+        "name" : "Car",
         "cost" : "25",
         "icon" : "car"
         },
         {
-        "name" : "bus",
+        "name" : "Bus",
         "cost" : "5.50",
         "icon" : "bus"
         },
         {
-        "name" : "bike",
+        "name" : "Bike",
         "cost" : "0",
         "icon" : "bicycle"
         },
         {
-        "name" : "walk",
+        "name" : "Walk",
         "cost" : "0",
         "icon" : "male"
         }
