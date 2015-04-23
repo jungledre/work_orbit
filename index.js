@@ -16,11 +16,14 @@ app.get('/about', function(req, res){
   res.render('about', {bio : bio.team});
 });
 
+app.post('/process', function(req,res){
+  res.send({result: true})
+});
+
 app.get('/map/:time/:mode/:location', function(req, res){
   var time = req.params.time
   var mode = req.params.mode
   mode = mode.charAt(0).toUpperCase() + mode.substr(1).toLowerCase()
-  console.log(mode)
   var location = req.params.location
   var match = modes.modes.filter(function(val, index, array) {
       return val.name === mode;
@@ -34,33 +37,3 @@ app.get('/map/:time/:mode/:location', function(req, res){
 app.listen(process.env.PORT || 3000, function(){
     console.log('DEATH RACE 3000!');
 });
-
-
-
-// chrome.tabs.query(
-
-// 	{active:true},
-// 	function (tabs)
-// 	{
-// 		if(tabs)
-// 		{
-// 			console.log(tabs);
-// 			return true;
-// 		}
-// 		else
-// 		{
-// 			return false;
-// 		}
-// 	}
-// );
-
-
-
-// names = ['Yuval', 'David', 'Galit'];
-// names.forEach
-// (
-// 	function(name)
-// 	{
-// 		console.log(name);
-// 	}
-// )

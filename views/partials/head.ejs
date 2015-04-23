@@ -8,96 +8,69 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLhw12hTzbrWIAIepH3EoDvKGs1WhetTQ"></script>
 <script type="text/javascript" src="https://apicdn.walkscore.com/api/v1/traveltime_widget/js?wsid=3950dacfe4b9f83564d394cab5e9fb88"></script>
-<script type="text/javascript">
-  function initialize() {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
-    var address = document.URL.split('/')[6];
-    address = address.replace(/%20/g,' ');
-    console.log(address)
-
-    var geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        var location = results[0].geometry.location
-        console.log("location: ", location)
-        var lat = location.D
-        var lng = location.k
-        console.log(lat,lng)
-        location = lat + ',' + lng
-        console.log(location)
-        // var marker = new google.maps.Marker({
-        //     map: map,
-        //     position: results[0].geometry.location
-        // });
-      } else {
-        alert("Geocode was not successful for the following reason: " + status);
-      }
-    });
-
-    var map = new google.maps.Map(
-      document.getElementById("map-canvas"),
-      {
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        center: new google.maps.LatLng(47.5844362,-122.3338832),
-        zoom: 13
-      }
-    );
-
-    var styles = [
-    {
-      stylers: [
-      { hue: "#337AB7" },
-      { saturation: -20 }
-      ]
-    },{
-      featureType: "road",
-      elementType: "geometry",
-      stylers: [
-      { lightness: 100 },
-      { visibility: "simplified" }
-      ]
-    },{
-      featureType: "road",
-      elementType: "labels",
-      stylers: [
-      { visibility: "off" }
-      ]
-    }
-    ];
-
-    map.setOptions({styles: styles});
-
-        var time = Number.parseInt(document.URL.split('/')[4]);
-        var mode = document.URL.split('/')[5];
-
-        // Data Imports //
-
-        var neighborhoods = map.data.loadGeoJson('https://s3.amazonaws.com/geohackers-for-good/seattle_named_neighborhoods.geojson');
-
-        if (mode == "bike") {
-          var pronto = map.data.loadGeoJson('https://s3.amazonaws.com/geohackers-for-good/pronto_locations.geojson');
+    <script type="text/javascript">
+      // What is the data structure of a polygon? //
+      var clickablePolygons = [];
+      var infoWindow = new google.maps.InfoWindow(
+        {
+          size: new google.maps.Size(100,50)
         }
+      );
 
-        // Styling the Data //
+      // This function is called after the HTML is finished loading.
+      // It is passed in as a callback to:
+        // google.maps.event.addDomListener(window, 'load', initialize);
+      function initialize() {
 
-        var mode_map = {
-          'car': walkscore.TravelTime.Mode.DRIVE,
-          'walk': walkscore.TravelTime.Mode.WALK,
-          'bike': walkscore.TravelTime.Mode.BIKE,
-          'bus': walkscore.TravelTime.Mode.TRANSIT
-        }
+          var mapCanvas  = document.getElementById('map-canvas');
+          var mapOptions = {
+                    mapTypeId : google.maps.MapTypeId.ROADMAP,
+                    center    : new google.maps.LatLng(47.6222788,-122.336828599),
+                    zoom      : 13
+                   };
 
-        var widget = new walkscore.TravelTimeWidget({
-          map: map,
-          origin: "47.5844362,-122.3338832",
-          show: true,
-          mode: mode_map[mode],
-          time: time,
-          congestion: true
-        });
+          // This creates the actual map object and attaches it to the HTML object //
+          var map = new google.maps.Map( mapCanvas, mapOptions );
 
-    }
+          // Loads the big JSON //
+          map.data.loadGeoJson('https://s3.amazonaws.com/work-orbit/all_Seattle_data_test.geojson', {idPropertyName:"name"});
 
-    google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
+          // Promisify this... for now, just time it //
+            // This is a hack. It should really be after the GeoJSON has loaded //
+          setTimeout(
+          function(){
+
+            // Add the click listener for events //
+            map.data.addListener('click', function(event) {
+              // Populate the string //
+              data_str  = '<div> Welcome to ' + event.feature['k']['name'] + '. ';
+              data_str += 'The median household income is ' + event.feature['k']['Median_Household_Income'] + '. ';
+              data_str += 'The average commute takes ' + event.feature['k']['Median_Commute_Time'] + ' minutes. ';
+              data_str += 'The following jobs are common here: ';
+              data_str += '<ul>';
+              event.feature['k']['Employment'].forEach( function(job) {
+                data_str += '<li>' + job + '</li>';
+              });
+              data_str += '</ul><br><div>';
+
+
+              // See how we can add Walkscore the the exact point //
+
+              infoWindow.setContent(data_str);
+
+              var anchor = new google.maps.MVCObject();
+              anchor.set("position",event.latLng);
+              infoWindow.open(map,anchor);
+
+            });
+          }
+          , 3500);
+
+
+      } // The initialize function ends here //
+
+      // This calls the initialize() function (above) after the page loads //
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
