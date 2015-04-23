@@ -13,11 +13,11 @@
     <p style="color: #337AB7";><%= time %> min commute</p>
     <br>
     <div class="">
-      <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-car fa-stack-1x fa-inverse"></i></span>
-      <h4 style="display: inline;">Car</h4>
+      <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-<%= icon %> fa-stack-1x fa-inverse"></i></span>
+      <h4 style="display: inline;"><%= mode %></h4>
       <br><br>
       <p>Time: <%= time %> min</p>
-      <p>Cost: $25/day</p>
+      <p>Cost: $<%= cost %>/day</p>
       <br>
       <p><strong>Neighborhoods:</strong> Downtown, Belltown, First Hill, Capitol Hill</p>
       <p><strong>Tips:</strong> Commute times vary depending on construction, traffic, etc.</p>
@@ -27,34 +27,37 @@
   <div class="row commute-additional">
     <p class="text-uppercase text-center">Explore Additional Options</p>
 
-    <div class="col-sm-4">
-        <div class="text-center">
-          <a href="/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-bicycle fa-stack-1x fa-inverse"></i></span></a>
-          <h4>Bike</h4>
+    <% for (var i = modes.length - 1; i >= 0; i--) { %>
+      <% if (modes[i].name !== mode ) { %>
+        <div class="col-sm-4 text-center">
+              <a href="/map/<%= time %>/<%= modes[i].name %>/<%= location %>"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-<%= modes[i].icon %> fa-stack-1x fa-inverse"></i></span></a>
+              <h4><%= modes[i].name %></h4>
+            <p>Time: <%= time %> min</p>
+            <p>Cost: $<%= modes[i].cost %>/day</p>
         </div>
-        <p>Time: <%= time %> min</p>
-        <p>Cost: $4/day</p>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="text-center">
-        <a href="/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-bus fa-stack-1x fa-inverse"></i></span></a>
-        <h4>Bus</h4>
-      </div>
-      <p>Time: <%= time %> min</p>
-      <p>Cost: $5/day</p>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="text-center">
-        <a href="/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-male fa-stack-1x fa-inverse"></i></span></a>
-        <h4>Walk</h4>
-      </div>
-      <p>Time: <%= time %> min</p>
-      <p>Cost: $0</p>
-    </div>
+        <% } %>
+    <% }; %>
   </div>
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid col-sm-6" id="commute-map">

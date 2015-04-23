@@ -3,7 +3,7 @@ Application Name: WorkOrbit
 This application was developed on March 22, 2015 for the [Seattle Hack the Commute](http://hackthecommute.seattle.gov/).
 
 ![Isn't our app beautiful?!](http://i.imgur.com/i0s7Mr6.png)
-Our app is live at http://example.com/awesome-app-that-doesnt-exist.
+Our app is live at (https://workorbit.herokuapp.com).
 
 ## Challenge and Approach
 
@@ -24,7 +24,7 @@ Our approach for satisfying this challenge was to:
 Our team is comprised of:
 
 - Allan Yeung[@alyeung](https://github.com/alyeung) - Project Management & Presentation
-- Adrienne Kerr[@JungleDre](https://github.com/jungledre) - Front-end & Mapping Technology
+- Adrienne Kerr[@JungleDre](https://github.com/jungledre) - Full Stack Development
 - Andy Barr[@elandybarr](https://github.com/elandybarr) - Mapping Technology
 - Darren Mills[@DarrenMills](https://github.com/DarrenRM) - UX & Design
 

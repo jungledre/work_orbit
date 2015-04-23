@@ -1,4 +1,4 @@
-<title>Hackathon</title>
+<title>Work Orbit</title>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
@@ -11,15 +11,16 @@
 <script type="text/javascript">
   function initialize() {
 
-    var address = document.URL.split('/')[5];
+    var address = document.URL.split('/')[6];
     address = address.replace(/%20/g,' ');
+    console.log(address)
 
     var geocoder = new google.maps.Geocoder();
 
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         var location = results[0].geometry.location
-        console.log(location)
+        console.log("location: ", location)
         var lat = location.D
         var lng = location.k
         console.log(lat,lng)
