@@ -4,6 +4,7 @@ var bodyParser  = require('body-parser');
 var ejs         = require('ejs');
 var modes       = require('./public/modes.json');
 var bio         = require('./public/bio.json');
+var RSVP        = require('rsvp');
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
