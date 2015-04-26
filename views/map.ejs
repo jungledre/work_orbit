@@ -13,57 +13,36 @@
     <p style="color: #337AB7";><%= time %> min commute</p>
     <br>
     <div class="">
-      <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-car fa-stack-1x fa-inverse"></i></span>
-      <h4 style="display: inline;">Car</h4>
+      <span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-<%= icon %> fa-stack-1x fa-inverse"></i></span>
+      <h4 style="display: inline;"><%= mode %></h4>
       <br><br>
       <p>Time: <%= time %> min</p>
-      <p>Cost: $25/day</p>
+      <p>Cost: $<%= cost %>/day</p>
       <br>
       <p><strong>Neighborhoods:</strong> Downtown, Belltown, First Hill, Capitol Hill</p>
-      <p><strong>Tips:</strong> These directions and maps are for planning purposes only. You may find that construction projects, traffic, weather, or other events may cause conditions to differ from the map results, and you should plan your commute accordingly.<br><br>The map shows commute times during peak commute hours.<br><br>Check the Seattle traffic information hosted by Washington State Department of Transportation to learn more about greater Seattle traffic conditions: http://www.wsdot.com/traffic/Seattle/</p>
+      <p><strong>Tips:</strong> Commute times vary depending on construction, traffic, etc.</p>
     </div>
   </div>
 
   <div class="row commute-additional">
     <p class="text-uppercase text-center">Explore Additional Options</p>
 
-    <div class="col-sm-4">
-        <div class="text-center">
-          <a href="/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-bicycle fa-stack-1x fa-inverse"></i></span></a>
-          <h4>Bike</h4>
+    <% for (var i = modes.length - 1; i >= 0; i--) { %>
+      <% if (modes[i].name !== mode ) { %>
+        <div class="col-sm-4 text-center">
+              <a href="/map/<%= time %>/<%= modes[i].name %>/<%= location %>"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-<%= modes[i].icon %> fa-stack-1x fa-inverse"></i></span></a>
+              <h4><%= modes[i].name %></h4>
+            <p>Time: <%= time %> min</p>
+            <p>Cost: $<%= modes[i].cost %>/day</p>
         </div>
-        <p>Time: <%= time %> min</p>
-        <p>Cost: $4/day</p>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="text-center">
-        <a href="/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-bus fa-stack-1x fa-inverse"></i></span></a>
-        <h4>Bus</h4>
-      </div>
-      <p>Time: <%= time %> min</p>
-      <p>Cost: $5/day</p>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="text-center">
-        <a href="/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-male fa-stack-1x fa-inverse"></i></span></a>
-        <h4>Walk</h4>
-      </div>
-      <p>Time: <%= time %> min</p>
-      <p>Cost: $0</p>
-    </div>
+        <% } %>
+    <% }; %>
   </div>
 
 </div>
 
 <div class="container-fluid col-sm-6" id="commute-map">
-<!--   <span id="logo-overlay" class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-car fa-stack-1x fa-inverse"></i></span>
- -->
-  <div id="map-canvas" class="" style="background-color: grey; height: 100%;">
-<!--   <span class="overlay-logo"><img src="logo-blue.png"></span>
- -->  </div>
+  <div id="map-canvas" class="" style="background-color: grey; height: 100%;"></div>
 </div>
-
 
 <% include ../views/partials/footer %>
