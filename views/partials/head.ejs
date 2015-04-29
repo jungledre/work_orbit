@@ -17,8 +17,26 @@
 			// Initialize the global map //
 			var time; var address; var mode;
 			
+			var clickTest;
+			
 			var map; var homeMarker; var workMarker;
-		
+
+			var homeIcon =  {
+								url : 'https://s3.amazonaws.com/geohackers-for-good/home.svg',
+								scaledSize: new google.maps.Size(30,30),
+								origin: new google.maps.Point(0,0),
+								anchor: new google.maps.Point(15, 15)
+							};
+							
+			homeMarker = new google.maps.Marker(
+				{	
+					position: new google.maps.LatLng(47.6222788,-122.336828599), // latLng,
+					map : null,
+					icon: homeIcon								
+				}
+			);
+
+			
 //			var neighborhoodStyles;
 			
 			var prontoMarkers = [];
@@ -202,8 +220,39 @@
 						time: time,	
 						congestion: true
 					});
-														 
+
+					//////////////////////////////////////////////////////////////
+
+					// Add the click listener for events //
+					map.data.addListener('click', function(event) {
+						// Save the latLng to anchor the marker and the infoWindow // 
+						clickTest = event;
+						console.log(event.latLng);
+
+						// Set the homeMarker //							
+							// This checks the initial condition, where we do not want 
+							//	it to appear on the map before clicking.
+						if (homeMarker.map === null) {
+							homeMarker.setMap(map);
+						}
+
+						// This changes the position property on the global variable. 
+						homeMarker.setPosition(event.latLng);
+						home.latLng = new google.maps.LatLng( event.latLng.lat(), event.latLng.lng());							
+							// How can we adjust the work marker? //
+						
+						
+					});					
+//////////////////////////////////////////////////////////////////////////////////					
 				});
+				
+				////////////////////// The InfoWindows /////////////////////
+
+
+				
+				
+				
+				////////////////////////////////////////////////////////////
 			}
 
 // This calls the initialize() function (above) after the page loads //
