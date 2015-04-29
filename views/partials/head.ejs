@@ -17,18 +17,32 @@
 		'use strict';
 
 			// Initialize the global map //
+			var map;
+	
+			// Map Settings determining the allowed pan area //
+			var allowedBounds = new google.maps.LatLngBounds(
+				 new google.maps.LatLng(47.417093, -122.625957), 
+				 new google.maps.LatLng(47.848820, -121.908861)
+			);			
+			var lastValidCenter;	// Last valid center of a map view for the bounds checking //
+	
+			// The Parameters that are passed through //
 			var time; var address; var mode;
 
-			// Options on the Widgets    //
-			
+			// Options on the Walkscore widget    //
 			var use_rush_hour_time = true;
+			var mode_map; var widget;
 			
-			var clickTest; var data_str;
+			// Test Variables            //
+			var clickTest; var res; var prontoMarkers = []; var ltlng = null;
 			
-			var map; var homeMarker; var workMarker;
+			// The InfoWindow            //
+			var data_str;
+			var infoWindow = new google.maps.InfoWindow( { size: new google.maps.Size(100,50) } );
+			
+			// The Main Two Markers      //
+			var homeMarker; var workMarker;
 
-			var res; 
-			
 			var homeIcon =  {
 								url : 'https://s3.amazonaws.com/geohackers-for-good/home.svg',
 								scaledSize: new google.maps.Size(30,30),
@@ -51,22 +65,8 @@
 					origin: new google.maps.Point(0,0),
 					anchor: new google.maps.Point(15, 15)
 				};					
-				
-			
-			// Maybe define the marker here //
-
-
-			// bounds of the desired area
-			var allowedBounds = new google.maps.LatLngBounds(
-				 new google.maps.LatLng(47.417093, -122.625957), 
-				 new google.maps.LatLng(47.848820, -121.908861)
-			);
-			
-			var lastValidCenter; 			
-
-//			var neighborhoodStyles;
-
-			var prontoMarkers = [];
+				 			
+			// Data Layer Icons and Styles //
 
 			var prontoIcon =  {
 				url : 'https://s3.amazonaws.com/geohackers-for-good/pronto_logo_hexa_hosted.svg',
@@ -84,7 +84,8 @@
 
 			var linkStyles; var linkMarker;
 			
-			var infoWindow = new google.maps.InfoWindow( { size: new google.maps.Size(100,50) } );
+
+			// Additional Google Services //
 
 			var geocoder     = new google.maps.Geocoder();
 			var geocoder_re  = null;
@@ -93,20 +94,13 @@
 			var directionsService = new google.maps.DirectionsService();
 			var directionsDisplay = new google.maps.DirectionsRenderer();
 
-			// Home to Work //
-				// Consider origin/dest
+			// Home and Work //
+				// Consider origin/dest for reversing the operation //
+				// Needed for geocoder and directions.              //
+				
+			var work_location; var work_lat; var work_lng; var work_location_str; var work_place;				
 			var home = {};
-/*			var work = {
-							latLng : new google.maps.LatLng(47.6222788,-122.336828599),
-							address: '1100 2nd Ave #500, Seattle, WA 98101'
-						};
-*/
-
-			var work_location; var work_lat; var work_lng; var work_location_str; var work_place;
-
-			var mode_map; var widget;
-
-			var ltlng = null;
+			var work = {}; // Set default if geocode doesn't work -> downtown. {latLng : new google.maps.LatLng(47.6222788,-122.336828599), address: '1100 2nd Ave #500, Seattle, WA 98101'};
 
 			// Here are the Pronto neighborhoods //
 
@@ -271,14 +265,12 @@
 						}
 					);
 					
+///////////////////////////////
 					
-					// https://s3.amazonaws.com/work-orbit/King_county_link.geojson //
-
-
 					var rapidRideStyles = {
 						visible       : true,
 						strokeColor   : 'red',
-						strokeWeight  : 3,
+						strokeWeight  : 5,
 						strokeOpacity : 0.7,
 						zIndex        : 100
 					}; 
@@ -288,7 +280,7 @@
 						{
 							rapid_lines.forEach(
 								function(rapid_line){
-//									console.log(rapid_line);
+									rapidRideStyles.title = rapid_line.getProperty('Line Letter') || 'Rapid Ride Route' ;
 									map.data.overrideStyle(rapid_line, rapidRideStyles);
 								}
 							);
@@ -296,7 +288,29 @@
 					);
 					
 					
+///////////////////////////////
 					
+					var streetcarStyles = {
+						visible       : true,
+						strokeColor   : 'yellow',
+						strokeWeight  : 5,
+						strokeOpacity : 0.7,
+						zIndex        : 100
+					}; 
+
+					map.data.loadGeoJson('https://s3.amazonaws.com/work-orbit/South_Lake_Union_Streetcar.geojson', {idPropertyName:"type"},
+						function (streetcars)
+						{
+							streetcars.forEach(
+								function(streetcar){
+//									console.log(streetcar);
+									streetcarStyles.title = 'South Lake Union Streetcar';
+									map.data.overrideStyle(streetcar, streetcarStyles);
+								}
+							);
+						}
+					);
+										
 					// Add in the Work Icon //
 					workMarker = new google.maps.Marker(
 						{	
@@ -325,7 +339,7 @@
 						map: map,
 						origin: work_location_str,
 						show: true,
-						mode: mode_map['car'],
+						mode: mode_map[mode],
 						time: time,
 						congestion: use_rush_hour_time
 					});
@@ -443,5 +457,7 @@ function turnOnProntoMarkers () {
 			
 // This calls the initialize() function (above) after the page loads //
 google.maps.event.addDomListener(window, 'load', initialize);
-//})();
+
+//})();             // I was calling this on an iffy to insure that this was consistent //
+
 </script>
