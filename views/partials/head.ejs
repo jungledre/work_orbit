@@ -23,7 +23,7 @@
 			
 			var use_rush_hour_time = true;
 			
-			var clickTest;
+			var clickTest; var data_str;
 			
 			var map; var homeMarker; var workMarker;
 
@@ -52,7 +52,7 @@
 					anchor: new google.maps.Point(15, 15)
 				};					
 				
-
+			
 			// Maybe define the marker here //
 
 
@@ -75,7 +75,16 @@
 				anchor: new google.maps.Point(15, 15)
 			};
 
-//			var infoWindow = new google.maps.InfoWindow( { size: new google.maps.Size(100,50) } );
+			var linkIcon =  {
+				url : 'https://s3.amazonaws.com/work-orbit/link_light_rail.png',
+				scaledSize: new google.maps.Size(30,30),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(15, 15)
+			};
+
+			var linkStyles; var linkMarker;
+			
+			var infoWindow = new google.maps.InfoWindow( { size: new google.maps.Size(100,50) } );
 
 			var geocoder     = new google.maps.Geocoder();
 			var geocoder_re  = null;
@@ -93,7 +102,7 @@
 						};
 */
 
-			var work_location; var work_lat; var work_lng; var work_location_str;
+			var work_location; var work_lat; var work_lng; var work_location_str; var work_place;
 
 			var mode_map; var widget;
 
@@ -135,20 +144,23 @@
 				var promiseGeocode = new RSVP.Promise(function (resolve, reject) {
 					var geocoder = new google.maps.Geocoder();
 					geocoder.geocode( { 'address': address}, function(results, status) {
-						res = results;
-						console.log(results);
+//						res = results;
+//						console.log(results);
 						if (status == google.maps.GeocoderStatus.OK) {
 							work_location     = results[0].geometry.location;
 							work_lat          = work_location.k;
 							work_lng          = work_location.D;
 							work_location_str = work_lat + ',' + work_lng;
+							work_place        = results[0].place_id;
 							resolve(work_location);
 							console.log('Successful resolution :D ', work_location_str);
+							console.log(work_place);
 						} else {
 							work_location     = new maps.google.latLng(47.6222788, -122.336828599);
 							work_lat          = 47.6222788;
 							work_lng          = -122.336828599;
 							work_location_str = work_lat + ',' + work_lng;
+							work_place        = null;
 							resolve(work_location);
 							console.log('Unable to find the location!!!');
 							resolve(work_location);
@@ -172,16 +184,6 @@
 					// This creates the actual map object and attaches it to the HTML object //
 					map = new google.maps.Map( mapCanvas, mapOptions );
 					console.log('the map is created');
-
-					// Add in the Work Icon //
-					workMarker = new google.maps.Marker(
-						{	
-							position: work_location,
-							map     : map,
-							icon    : workIcon //,
-//							place   : 
-						}
-					);					
 
 					// Add an info window on the Icon based on the geocoder result... //
 					
@@ -234,12 +236,79 @@
 						{
 							pronto_points.forEach(
 								function(pronto_point){
+//										console.log(pronto_point);
+									prontoStyles.title = pronto_point.getProperty('address') || 'Pronto Station';
 									map.data.overrideStyle(pronto_point, prontoStyles);
 								}
 							);
 						}
 					);
+					
+					// Sorted by "type":"Link"
 
+					var linkIcon =  {
+						url : 'https://s3.amazonaws.com/work-orbit/link_light_rail.png',
+						scaledSize: new google.maps.Size(30,30),
+						origin: new google.maps.Point(0,0),
+						anchor: new google.maps.Point(15, 15)
+					};					
+					
+					var linkStyles = {
+						icon      : linkIcon,
+						visible   : true,
+						clickable : true
+					}; // Set title to the station.address
+
+					map.data.loadGeoJson('https://s3.amazonaws.com/work-orbit/fixed_link_light_rail.geojson', {idPropertyName:"station_number"},
+						function (link_points)
+						{
+							link_points.forEach(
+								function(link_point){
+									linkStyles.title = link_point.getProperty('description') || 'Link Light Rail Station';
+									map.data.overrideStyle(link_point, linkStyles);
+								}
+							);
+						}
+					);
+					
+					
+					// https://s3.amazonaws.com/work-orbit/King_county_link.geojson //
+
+
+					var rapidRideStyles = {
+						visible       : true,
+						strokeColor   : 'red',
+						strokeWeight  : 3,
+						strokeOpacity : 0.7,
+						zIndex        : 100
+					}; 
+
+					map.data.loadGeoJson('https://s3.amazonaws.com/work-orbit/Rapid_Ride_lines.geojson', {idPropertyName:"Line Letter"},
+						function (rapid_lines)
+						{
+							rapid_lines.forEach(
+								function(rapid_line){
+//									console.log(rapid_line);
+									map.data.overrideStyle(rapid_line, rapidRideStyles);
+								}
+							);
+						}
+					);
+					
+					
+					
+					// Add in the Work Icon //
+					workMarker = new google.maps.Marker(
+						{	
+							position: work_location,
+							map     : map,
+							icon    : workIcon
+							// ,place   : work_place 
+							// This should automatically append an infoWindow //
+						}
+					);
+					
+					
 					/////////////////// Add the widget /////////////////////
 
 					// Styling the Data //
@@ -285,18 +354,49 @@
 						// This changes the position property on the global variable. 
 						homeMarker.setPosition(event.latLng);
 						home.latLng = new google.maps.LatLng( event.latLng.lat(), event.latLng.lng());							
-							// How can we adjust the work marker? //
+							
+						// Pronto Bikes //
+
+						// Check if the current neighborhood is in the list //
+						if (pronto_available_neighborhoods.indexOf(event.feature['k']['name']) > -1 ){
+							console.log('Pronto is available here!');
+							turnOnProntoMarkers();
+						} else {
+							console.log('Pronto NOT available here');
+							turnOffProntoMarkers();
+						}
 						
-						// Fill in the infoWindows //
+						////////////////////// The InfoWindows /////////////////////
+
+						// Populate the string // 
+						data_str  = '<div> Welcome to ' + event.feature['k']['name'] + '. ';
+						data_str += 'The median household income is ' + event.feature['k']['Median_Household_Income'] + '. ';
+						data_str += 'The average commute takes ' + event.feature['k']['Median_Commute_Time'] + '. ';
+						data_str += 'The following jobs are common here: ';
+						data_str += '<ul>';
+						
+						event.feature['k']['Employment'].forEach( function(job) {
+							data_str += '<li>' + job + '</li>';
+						});
+						data_str += '</ul><br>';
+						data_str += '<img src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40.gif" width="150" height="40" alt="Zillow Real Estate Search" />';
+						data_str += '<div>';
+						
+						
+						// See how we can add Walkscore the the exact point //
+					
+						infoWindow.setContent(data_str);
+						
+						var anchor = new google.maps.MVCObject();
+						anchor.set("position",event.latLng);
+						infoWindow.open(map,anchor);
+						
 					
 						// Check if the neighborhood is pronto enabled //
 					
 					});					
 				});
 				
-				////////////////////// The InfoWindows /////////////////////
-
-
 				
 				
 				
@@ -318,6 +418,29 @@
 				
 			}
 
+function turnOffProntoMarkers () {
+		map.data.forEach(
+							function( datum ) { 													
+								if ( datum.k.type === 'Pronto') { 												
+									map.data.overrideStyle( datum, { visible: false });												
+								}
+							}
+		);
+}
+
+function turnOnProntoMarkers () {
+		map.data.forEach(
+							function( datum ) { 													
+								if ( datum.k.type === 'Pronto') { 												
+									map.data.overrideStyle( 
+										datum, { visible: true, icon: prontoIcon }
+									);
+								}
+							}
+		);
+}
+
+			
 // This calls the initialize() function (above) after the page loads //
 google.maps.event.addDomListener(window, 'load', initialize);
 //})();
