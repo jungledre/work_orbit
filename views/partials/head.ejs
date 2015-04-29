@@ -15,6 +15,8 @@
 			'use strict';
 
 			// Initialize the global map //
+			var time; var address; var mode;
+			
 			var map; var homeMarker; var workMarker;
 		
 //			var neighborhoodStyles;
@@ -45,6 +47,10 @@
 							address: '1100 2nd Ave #500, Seattle, WA 98101'
 						}; 
 */
+
+			var work_location; var work_lat; var work_lng; var work_location_str;
+			
+			var mode_map; var widget;
 			
 			var ltlng = null;
 			
@@ -73,27 +79,24 @@
 
 			function initialize() {
 			
-////
-				var address = document.URL.split('/')[6];
+				time = Number.parseInt(document.URL.split('/')[4]);
+				mode = document.URL.split('/')[5];			
+			
+				address = document.URL.split('/')[6];
 				address = address.replace(/%20/g,' ');
 
 				console.log(address);
-				
-				var work_location; var work_lat; var work_lng; var work_location_str;
-				
+								
 				var promiseGeocode = new RSVP.Promise(function (resolve, reject) {
 					var geocoder = new google.maps.Geocoder();
 					geocoder.geocode( { 'address': address}, function(results, status) {
-						if (status == google.maps.GeocoderStatus.OK) {
-//							console.log(results);
-							
+						if (status == google.maps.GeocoderStatus.OK) {							
 							work_location     = results[0].geometry.location;
 							work_lat          = work_location.k;
 							work_lng          = work_location.D;
 							work_location_str = work_lat + ',' + work_lng;
 							resolve(work_location);
-							console.log('Successful resolution :D ', work_location_str);
-							
+							console.log('Successful resolution :D ', work_location_str);							
 						} else {
 							work_location     = new maps.google.latLng(47.6222788, -122.336828599);
 							work_lat          = 47.6222788;
@@ -122,6 +125,10 @@
 					// This creates the actual map object and attaches it to the HTML object //
 					map = new google.maps.Map( mapCanvas, mapOptions );
 					console.log('the map is created');
+					
+					
+					////////////////////////////////////////////////////////
+					
 					
 					var neighborhoodStyles = {
 						fillColor     : 'green',
@@ -173,8 +180,29 @@
 								}
 							);
 						}
-					);					
-									 
+					);	
+
+					/////////////////// Add the widget /////////////////////
+					
+					// Styling the Data //
+					mode_map = {
+						'car': walkscore.TravelTime.Mode.DRIVE,
+						'walk': walkscore.TravelTime.Mode.WALK,
+						'bike': walkscore.TravelTime.Mode.BIKE,
+						'bus': walkscore.TravelTime.Mode.TRANSIT
+					};
+
+					widget = new walkscore.TravelTimeWidget(
+					{
+						color:'#00000000',
+						map: map,
+						origin: work_location_str,
+						show: true,
+						mode: mode_map['car'],
+						time: time,	
+						congestion: true
+					});
+														 
 				});
 			}
 
